@@ -485,7 +485,7 @@ def build_home():
   <div class="cta-trigger"></div>
 </section>
 
-<section class="section" style="padding-bottom:140px">
+<section class="section sec-white" style="padding-bottom:140px">
   <div class="inner">
     {sec_head("Our team", TEAM_INTRO)}
     <div class="team-home-grid appear">{team_cards}</div>
