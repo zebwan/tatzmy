@@ -608,8 +608,9 @@ body.menu-open { overflow: hidden; }
   position: absolute;
   inset: 0;
   background: var(--white);
-  opacity: 0;
-  transition: opacity .6s cubic-bezier(.44, 0, .56, 1);
+  transform: translateY(100%); /* white sheet waits below, fills bottom-to-top */
+  transition: transform .8s var(--ease-spring);
+  will-change: transform;
 }
 .cta-scroll .cta-trigger { height: 100vh; width: 100%; background: transparent; }
 .cta-scroll .frame {
@@ -624,11 +625,14 @@ body.menu-open { overflow: hidden; }
   align-items: center;
   gap: 60px;
 }
-.cta-scroll .frame .t-sub { transition: color .6s cubic-bezier(.44, 0, .56, 1); }
+.cta-scroll .frame .t-sub {
+  transition: color .5s cubic-bezier(.44, 0, .56, 1) .12s, transform .8s var(--ease-spring);
+  transform-origin: 50% 50%;
+}
 .cta-scroll .frame .btn-pill .txt,
 .cta-scroll .frame .btn-pill .ico { transition: background .6s ease, color .6s ease; }
-.cta-scroll.on .whiteframe { opacity: 1; }
-.cta-scroll.on .frame .t-sub { color: var(--black); }
+.cta-scroll.on .whiteframe { transform: translateY(0); }
+.cta-scroll.on .frame .t-sub { color: var(--black); transform: scale(1.07); }
 .cta-scroll.on .frame .btn-pill .txt,
 .cta-scroll.on .frame .btn-pill .ico { background: var(--black); color: var(--white); }
 .cta-scroll.on .frame .btn-pill .ico svg { color: var(--white); }
