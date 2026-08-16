@@ -161,25 +161,28 @@
     }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
     if (trigger) tio.observe(trigger);
 
-    // text zoom scrubbed by scroll: grows 1 -> 1.12 across the pinned stretch,
-    // so it inflates continuously while the black turns white (and reverses)
+    // fully scroll-scrubbed takeover: the sheet's rise and the text zoom are
+    // pure functions of scroll position — scrub down, it fills; scrub up, it
+    // drains. Zoom ramps from the moment the section enters the viewport.
+    var ctaWf = cta.querySelector('.whiteframe');
     var ctaSub = cta.querySelector('.frame .t-sub');
-    if (ctaSub) {
-      var ctaTick = false;
-      var ctaZoom = function () {
-        ctaTick = false;
-        var r = cta.getBoundingClientRect();
-        var span = r.height - window.innerHeight;
-        var p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
-        ctaSub.style.transform = 'scale(' + (1 + 0.12 * p).toFixed(4) + ')';
-      };
-      var onCtaScroll = function () {
-        if (!ctaTick) { ctaTick = true; requestAnimationFrame(ctaZoom); }
-      };
-      window.addEventListener('scroll', onCtaScroll, { passive: true });
-      window.addEventListener('resize', onCtaScroll);
-      ctaZoom();
-    }
+    var ctaTick = false;
+    var ctaScrub = function () {
+      ctaTick = false;
+      var r = cta.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var pinSpan = r.height - vh;
+      var pPin = pinSpan > 0 ? Math.min(1, Math.max(0, -r.top / pinSpan)) : 0;
+      var pAll = Math.min(1, Math.max(0, (vh - r.top) / r.height));
+      if (ctaWf) ctaWf.style.transform = 'translateY(' + ((1 - pPin) * 100).toFixed(2) + '%)';
+      if (ctaSub) ctaSub.style.transform = 'scale(' + (1 + 0.12 * pAll).toFixed(4) + ')';
+    };
+    var onCtaScroll = function () {
+      if (!ctaTick) { ctaTick = true; requestAnimationFrame(ctaScrub); }
+    };
+    window.addEventListener('scroll', onCtaScroll, { passive: true });
+    window.addEventListener('resize', onCtaScroll);
+    ctaScrub();
   }
 
   /* ---------- footer reveal: match the window to the real footer height ---------- */

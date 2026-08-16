@@ -605,17 +605,20 @@ body.menu-open { overflow: hidden; }
   justify-content: center;
 }
 .cta-scroll .whiteframe {
+  /* scroll-scrubbed white sheet: position driven by main.js, soft gradient
+     leading edge so black blends through greys into white as it rises */
   position: absolute;
-  inset: 0;
-  background: var(--white);
-  transform: translateY(100%); /* white sheet waits below, fills bottom-to-top */
-  transition: transform .8s var(--ease-spring);
+  left: 0; right: 0; bottom: 0;
+  height: 135%;
+  background: linear-gradient(to top, var(--white) 74%, rgba(255, 255, 255, 0));
+  transform: translateY(100%);
   will-change: transform;
 }
 .cta-scroll .cta-trigger { height: 100vh; width: 100%; background: transparent; }
 .cta-scroll .frame {
+  /* no z-index: a stacking context here would isolate the text's
+     mix-blend-mode from the whiteframe behind it */
   position: relative;
-  z-index: 1;
   width: 100%;
   max-width: 800px;
   padding: 0 var(--gutter);
@@ -626,14 +629,15 @@ body.menu-open { overflow: hidden; }
   gap: 60px;
 }
 .cta-scroll .frame .t-sub {
-  transition: color .5s cubic-bezier(.44, 0, .56, 1) .12s;
+  /* stays white; difference blend inverts it line by line as the sheet's
+     gradient edge passes behind. Scale is scrubbed by scroll in main.js */
+  color: var(--white);
+  mix-blend-mode: difference;
   transform-origin: 50% 50%;
-  will-change: transform; /* scale is scrubbed by scroll in main.js */
+  will-change: transform;
 }
 .cta-scroll .frame .btn-pill .txt,
 .cta-scroll .frame .btn-pill .ico { transition: background .6s ease, color .6s ease; }
-.cta-scroll.on .whiteframe { transform: translateY(0); }
-.cta-scroll.on .frame .t-sub { color: var(--black); }
 .cta-scroll.on .frame .btn-pill .txt,
 .cta-scroll.on .frame .btn-pill .ico { background: var(--black); color: var(--white); }
 .cta-scroll.on .frame .btn-pill .ico svg { color: var(--white); }
