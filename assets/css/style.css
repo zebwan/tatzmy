@@ -626,13 +626,14 @@ body.menu-open { overflow: hidden; }
   gap: 60px;
 }
 .cta-scroll .frame .t-sub {
-  transition: color .5s cubic-bezier(.44, 0, .56, 1) .12s, transform .8s var(--ease-spring);
+  transition: color .5s cubic-bezier(.44, 0, .56, 1) .12s;
   transform-origin: 50% 50%;
+  will-change: transform; /* scale is scrubbed by scroll in main.js */
 }
 .cta-scroll .frame .btn-pill .txt,
 .cta-scroll .frame .btn-pill .ico { transition: background .6s ease, color .6s ease; }
 .cta-scroll.on .whiteframe { transform: translateY(0); }
-.cta-scroll.on .frame .t-sub { color: var(--black); transform: scale(1.07); }
+.cta-scroll.on .frame .t-sub { color: var(--black); }
 .cta-scroll.on .frame .btn-pill .txt,
 .cta-scroll.on .frame .btn-pill .ico { background: var(--black); color: var(--white); }
 .cta-scroll.on .frame .btn-pill .ico svg { color: var(--white); }
